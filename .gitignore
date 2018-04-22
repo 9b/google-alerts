@@ -1,0 +1,13 @@
+# Python
+*.pyc
+# Editor
+*\.sw[a-z]
+# Setuptools 'develop' target
+*.egg-info/
+build/
+dist/
+setuptools-*
+venv/
+venv3/
+.pypirc
+.notes
