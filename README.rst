@@ -9,19 +9,19 @@ To be added.
 
 Actions
 -------
-Getting an instance:
+**Getting an instance**:
 
 ``ga = GoogleAlerts('your.email@gmail.com', '**password**')``
 
-Authenticating your user (does not support 2FA):
+**Authenticating your user (does not support 2FA)**:
 
 ``ga.authenticate()``
 
-Listing monitors:
+**Listing monitors**:
 
 ``ga.list()``
 
-Example monitor::
+**Example monitor listing**::
 
     [{
         "term": "hello world",
@@ -34,17 +34,17 @@ Example monitor::
         "match_type": "BEST"
     }]
 
-Adding a new monitor:
+**Adding a new monitor**:
 
 ``ga.create("Hello World", {'delivery': 'RSS'})``
 
-Modify an existing monitor:
+**Modify an existing monitor**:
 
-``ga.modify("89e517961a3148c7:f44796ce5ecea515:com:en:US", {'delivery': 'RSS', 'monitor_match': 'ALL'})``
+``ga.modify("89e517961a3148c7:c395b7d271b4eccc:com:en:US", {'delivery': 'RSS', 'monitor_match': 'ALL'})``
 
-Delete a monitor:
+**Delete a monitor**:
 
-``ga.delete("89e517961a3148c7:f44796ce5ecea515:com:en:US")``
+``ga.delete("89e517961a3148c7:c395b7d271b4eccc:com:en:US")``
 
 Features
 --------
