@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 """Perform administrative actions on Google Alerts."""
 __author__ = "Brandon Dixon"
-__copyright__ = "Copyright, Brandion Dixon"
+__copyright__ = "Copyright, Brandon Dixon"
 __credits__ = ["Brandon Dixon"]
 __license__ = "MIT"
 __maintainer__ = "Brandon Dixon"
@@ -17,6 +17,7 @@ def main():
     """Run the core."""
     parser = ArgumentParser()
     subs = parser.add_subparsers(dest='cmd')
+    raise Exception("To Be Completed.")
 
 
 if __name__ == '__main__':

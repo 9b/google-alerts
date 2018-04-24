@@ -15,7 +15,7 @@ setup(
     author_email="brandon@9bplus.com",
     license="MIT",
     packages=find_packages(),
-    install_requires=[''],
+    install_requires=['beautifulsoup4', 'requests'],
     long_description=read('README.rst'),
     classifiers=[
         'Development Status :: 4 - Beta',
@@ -25,15 +25,11 @@ setup(
         'Programming Language :: Python',
         'Topic :: Software Development :: Libraries'
     ],
-    package_data={
-        'pyhottop': [],
-    },
     entry_points={
         'console_scripts': [
-            'pyhottop-test = pyhottop.cli.config:main'
+            'google-alert = google_alerts.cli.manage:main'
         ]
     },
-    include_package_data=True,
     zip_safe=False,
     keywords=['google', 'alerts', 'automation', 'administration'],
     download_url='https://github.com/9b/google-alerts/archive/master.zip'

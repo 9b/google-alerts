@@ -1,10 +1,8 @@
-Python Google Alerts
-====================
-The `google-alerts` Python module provides an abstract interface for the Google Alerts service. Google does not provide an official API for this service, so interactions are done through web scripting.
+Getting Started
+===============
 
-Quick Start
------------
 **Install the library**:
+
 ``pip install google-alerts`` or ``python setup.py install``
 
 **Getting an instance**:
@@ -43,14 +41,3 @@ Quick Start
 **Delete a monitor**:
 
 ``ga.delete("89e517961a3148c7:c395b7d271b4eccc:com:en:US")``
-
-Features
---------
-* Add new monitors (RSS or Mail)
-* Modify existing monitors
-* Delete monitors by ID or term
-* List all monitors with details
-
-Changelog
----------
-To be added.

@@ -1,0 +1,299 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Code Documentation &mdash; google_alerts 0.1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Exceptions" href="exceptions.html" />
+    <link rel="prev" title="Getting Started" href="introduction.html" /> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> google_alerts
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Getting Started</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Code Documentation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#googlealerts-interface">GoogleAlerts Interface</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="exceptions.html">Exceptions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">google_alerts</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Code Documentation</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/code.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="code-documentation">
+<h1>Code Documentation<a class="headerlink" href="#code-documentation" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="googlealerts-interface">
+<h2>GoogleAlerts Interface<a class="headerlink" href="#googlealerts-interface" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="google_alerts.google_alerts.GoogleAlerts">
+<em class="property">class </em><code class="descclassname">google_alerts.google_alerts.</code><code class="descname">GoogleAlerts</code><span class="sig-paren">(</span><em>email</em>, <em>password</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google_alerts/google_alerts.html#GoogleAlerts"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google_alerts.google_alerts.GoogleAlerts" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="google_alerts.google_alerts.GoogleAlerts._logger">
+<code class="descname">_logger</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/google_alerts/google_alerts.html#GoogleAlerts._logger"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google_alerts.google_alerts.GoogleAlerts._logger" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a logger to be used between processes.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Logging instance.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google_alerts.google_alerts.GoogleAlerts._process_state">
+<code class="descname">_process_state</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/google_alerts/google_alerts.html#GoogleAlerts._process_state"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google_alerts.google_alerts.GoogleAlerts._process_state" title="Permalink to this definition">¶</a></dt>
+<dd><p>Process the application state configuration.</p>
+<p>Google Alerts manages the account information and alert data through
+some custom state configuration. Not all values have been completely
+enumerated.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="google_alerts.google_alerts.GoogleAlerts.authenticate">
+<code class="descname">authenticate</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/google_alerts/google_alerts.html#GoogleAlerts.authenticate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google_alerts.google_alerts.GoogleAlerts.authenticate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Authenticate the user and setup our state.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="google_alerts.google_alerts.GoogleAlerts.create">
+<code class="descname">create</code><span class="sig-paren">(</span><em>term</em>, <em>options</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google_alerts/google_alerts.html#GoogleAlerts.create"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google_alerts.google_alerts.GoogleAlerts.create" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a monitor using passed configuration.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="google_alerts.google_alerts.GoogleAlerts.delete">
+<code class="descname">delete</code><span class="sig-paren">(</span><em>monitor_id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google_alerts/google_alerts.html#GoogleAlerts.delete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google_alerts.google_alerts.GoogleAlerts.delete" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delete a monitor by ID.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="google_alerts.google_alerts.GoogleAlerts.delete_by_term">
+<code class="descname">delete_by_term</code><span class="sig-paren">(</span><em>term</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google_alerts/google_alerts.html#GoogleAlerts.delete_by_term"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google_alerts.google_alerts.GoogleAlerts.delete_by_term" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delete an alert by term.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="google_alerts.google_alerts.GoogleAlerts.list">
+<code class="descname">list</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/google_alerts/google_alerts.html#GoogleAlerts.list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google_alerts.google_alerts.GoogleAlerts.list" title="Permalink to this definition">¶</a></dt>
+<dd><p>List alerts configured for the account.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="google_alerts.google_alerts.GoogleAlerts.modify">
+<code class="descname">modify</code><span class="sig-paren">(</span><em>monitor_id</em>, <em>options</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google_alerts/google_alerts.html#GoogleAlerts.modify"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google_alerts.google_alerts.GoogleAlerts.modify" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a monitor using passed configuration.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="exceptions.html" class="btn btn-neutral float-right" title="Exceptions" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="introduction.html" class="btn btn-neutral" title="Getting Started" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Brandon Dixon.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.1.0',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          
+          SphinxRtdTheme.Navigation.enableSticky();
+          
+      });
+  </script> 
+
+</body>
+</html>
