@@ -5,6 +5,7 @@ The `google-alerts` Python module provides an abstract interface for the Google 
 Quick Start
 -----------
 **Install the library**:
+
 ``pip install google-alerts`` or ``python setup.py install``
 
 **Getting an instance**:
