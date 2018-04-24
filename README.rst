@@ -1,5 +1,11 @@
 Python Google Alerts
 ====================
+.. image:: https://readthedocs.org/projects/google-alerts/badge/?version=latest
+    :target: http://google-alerts.readthedocs.io/en/latest/?badge=latest
+
+.. image:: https://badge.fury.io/py/google-alerts.svg
+    :target: https://badge.fury.io/py/google-alerts
+    
 The `google-alerts` Python module provides an abstract interface for the Google Alerts service. Google does not provide an official API for this service, so interactions are done through web scripting.
 
 Quick Start
