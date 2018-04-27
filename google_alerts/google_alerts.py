@@ -44,7 +44,7 @@ class ActionError(Exception):
 class GoogleAlerts:
 
     NAME = "GoogleAlerts"
-    LOG_LEVEL = logging.DEBUG
+    LOG_LEVEL = logging.INFO
     LOGIN_URL = 'https://accounts.google.com/ServiceLogin'
     AUTH_URL = 'https://accounts.google.com/signin/challenge/sl/password'
     ALERTS_URL = 'https://www.google.com/alerts'
@@ -161,7 +161,7 @@ class GoogleAlerts:
         self._process_state()
         return
 
-    def list(self):
+    def list(self, term=None):
         """List alerts configured for the account."""
         if not self._state:
             raise InvalidState("State was not properly obtained from the app")
@@ -176,6 +176,8 @@ class GoogleAlerts:
             obj['monitor_id'] = monitor[1]
             obj['user_id'] = monitor[-1]
             obj['term'] = monitor[2][3][1]
+            if term and obj['term'] != term:
+                continue
             obj['language'] = monitor[2][3][3][1]
             obj['region'] = monitor[2][3][3][2]
             obj['delivery'] = self.DELIVERY[monitor[2][6][0][1]]
@@ -204,7 +206,7 @@ class GoogleAlerts:
         if response.status_code != 200:
             raise ActionError("Failed to create monitor: %s"
                               % response.content)
-        return self.list()
+        return self.list(term)
 
     def modify(self, monitor_id, options):
         """Create a monitor using passed configuration."""
@@ -236,12 +238,12 @@ class GoogleAlerts:
         if not self._state:
             raise InvalidState("State was not properly obtained from the app")
         monitors = self.list()  # Get the latest set of monitors
-        monitor_id = None
+        bit = None
         for monitor in monitors:
             if monitor_id != monitor['monitor_id']:
                 continue
-            monitor_id = monitor['monitor_id']
-        if not monitor_id:
+            bit = monitor['monitor_id']
+        if not bit:
             raise MonitorNotFound("No monitor was found with that term.")
         url = self.ALERTS_DELETE_URL.format(requestX=self._state[3])
         self._log.debug("Deleting alert using: %s" % url)

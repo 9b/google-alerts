@@ -8,7 +8,7 @@ def read(fname):
 
 setup(
     name='google-alerts',
-    version='0.0.1',
+    version='0.1.0',
     description='Abstraction to manage Google Alerts and output',
     url="https://github.com/9b/google-alerts",
     author="Brandon Dixon",
@@ -27,7 +27,7 @@ setup(
     ],
     entry_points={
         'console_scripts': [
-            'google-alert = google_alerts.cli.manage:main'
+            'google-alerts = google_alerts.cli.manage:main'
         ]
     },
     zip_safe=False,

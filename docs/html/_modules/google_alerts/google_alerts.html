@@ -195,7 +195,7 @@
 <div class="viewcode-block" id="GoogleAlerts"><a class="viewcode-back" href="../../code.html#google_alerts.google_alerts.GoogleAlerts">[docs]</a><span class="k">class</span> <span class="nc">GoogleAlerts</span><span class="p">:</span>
 
     <span class="n">NAME</span> <span class="o">=</span> <span class="s2">&quot;GoogleAlerts&quot;</span>
-    <span class="n">LOG_LEVEL</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span>
+    <span class="n">LOG_LEVEL</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">INFO</span>
     <span class="n">LOGIN_URL</span> <span class="o">=</span> <span class="s1">&#39;https://accounts.google.com/ServiceLogin&#39;</span>
     <span class="n">AUTH_URL</span> <span class="o">=</span> <span class="s1">&#39;https://accounts.google.com/signin/challenge/sl/password&#39;</span>
     <span class="n">ALERTS_URL</span> <span class="o">=</span> <span class="s1">&#39;https://www.google.com/alerts&#39;</span>
@@ -312,7 +312,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_process_state</span><span class="p">()</span>
         <span class="k">return</span></div>
 
-<div class="viewcode-block" id="GoogleAlerts.list"><a class="viewcode-back" href="../../code.html#google_alerts.google_alerts.GoogleAlerts.list">[docs]</a>    <span class="k">def</span> <span class="nf">list</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="GoogleAlerts.list"><a class="viewcode-back" href="../../code.html#google_alerts.google_alerts.GoogleAlerts.list">[docs]</a>    <span class="k">def</span> <span class="nf">list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">term</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;List alerts configured for the account.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">InvalidState</span><span class="p">(</span><span class="s2">&quot;State was not properly obtained from the app&quot;</span><span class="p">)</span>
@@ -327,6 +327,8 @@
             <span class="n">obj</span><span class="p">[</span><span class="s1">&#39;monitor_id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">monitor</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
             <span class="n">obj</span><span class="p">[</span><span class="s1">&#39;user_id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">monitor</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
             <span class="n">obj</span><span class="p">[</span><span class="s1">&#39;term&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">monitor</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">3</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">term</span> <span class="ow">and</span> <span class="n">obj</span><span class="p">[</span><span class="s1">&#39;term&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="n">term</span><span class="p">:</span>
+                <span class="k">continue</span>
             <span class="n">obj</span><span class="p">[</span><span class="s1">&#39;language&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">monitor</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">3</span><span class="p">][</span><span class="mi">3</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
             <span class="n">obj</span><span class="p">[</span><span class="s1">&#39;region&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">monitor</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">3</span><span class="p">][</span><span class="mi">3</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span>
             <span class="n">obj</span><span class="p">[</span><span class="s1">&#39;delivery&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">DELIVERY</span><span class="p">[</span><span class="n">monitor</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">6</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]]</span>
@@ -355,7 +357,7 @@
         <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">!=</span> <span class="mi">200</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">ActionError</span><span class="p">(</span><span class="s2">&quot;Failed to create monitor: </span><span class="si">%s</span><span class="s2">&quot;</span>
                               <span class="o">%</span> <span class="n">response</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">list</span><span class="p">()</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">list</span><span class="p">(</span><span class="n">term</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="GoogleAlerts.modify"><a class="viewcode-back" href="../../code.html#google_alerts.google_alerts.GoogleAlerts.modify">[docs]</a>    <span class="k">def</span> <span class="nf">modify</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">monitor_id</span><span class="p">,</span> <span class="n">options</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Create a monitor using passed configuration.&quot;&quot;&quot;</span>
@@ -387,12 +389,12 @@
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">InvalidState</span><span class="p">(</span><span class="s2">&quot;State was not properly obtained from the app&quot;</span><span class="p">)</span>
         <span class="n">monitors</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">list</span><span class="p">()</span>  <span class="c1"># Get the latest set of monitors</span>
-        <span class="n">monitor_id</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">bit</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">for</span> <span class="n">monitor</span> <span class="ow">in</span> <span class="n">monitors</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">monitor_id</span> <span class="o">!=</span> <span class="n">monitor</span><span class="p">[</span><span class="s1">&#39;monitor_id&#39;</span><span class="p">]:</span>
                 <span class="k">continue</span>
-            <span class="n">monitor_id</span> <span class="o">=</span> <span class="n">monitor</span><span class="p">[</span><span class="s1">&#39;monitor_id&#39;</span><span class="p">]</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">monitor_id</span><span class="p">:</span>
+            <span class="n">bit</span> <span class="o">=</span> <span class="n">monitor</span><span class="p">[</span><span class="s1">&#39;monitor_id&#39;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">bit</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">MonitorNotFound</span><span class="p">(</span><span class="s2">&quot;No monitor was found with that term.&quot;</span><span class="p">)</span>
         <span class="n">url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ALERTS_DELETE_URL</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">requestX</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_state</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Deleting alert using: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">url</span><span class="p">)</span>

@@ -84,7 +84,11 @@
             
             
               <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Getting Started</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Getting Started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#sample-code">Sample Code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#example-output">Example Output</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="code.html">Code Documentation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="exceptions.html">Exceptions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
@@ -156,13 +160,42 @@
 <h1>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h1>
 <p><strong>Install the library</strong>:</p>
 <p><code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">google-alerts</span></code> or <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">setup.py</span> <span class="pre">install</span></code></p>
-<p><strong>Getting an instance</strong>:</p>
-<p><code class="docutils literal notranslate"><span class="pre">ga</span> <span class="pre">=</span> <span class="pre">GoogleAlerts('your.email&#64;gmail.com',</span> <span class="pre">'**password**')</span></code></p>
-<p><strong>Authenticating your user (does not support 2FA)</strong>:</p>
-<p><code class="docutils literal notranslate"><span class="pre">ga.authenticate()</span></code></p>
-<p><strong>Listing monitors</strong>:</p>
-<p><code class="docutils literal notranslate"><span class="pre">ga.list()</span></code></p>
-<p><strong>Example monitor listing</strong>:</p>
+<p><strong>Save your configuration</strong>:</p>
+<p><code class="docutils literal notranslate"><span class="pre">google-alerts</span> <span class="pre">setup</span> <span class="pre">--email</span> <span class="pre">&lt;your.mail&#64;foo.com&gt;</span> <span class="pre">--password</span> <span class="pre">'password'</span></code></p>
+<p><strong>Create a monitor</strong>:</p>
+<p><code class="docutils literal notranslate"><span class="pre">google-alerts</span> <span class="pre">create</span> <span class="pre">--term</span> <span class="pre">&quot;hello</span> <span class="pre">world&quot;</span> <span class="pre">--delivery</span> <span class="pre">'rss'</span></code></p>
+<p><strong>List monitors</strong>:</p>
+<p><code class="docutils literal notranslate"><span class="pre">google-alerts</span> <span class="pre">list</span></code></p>
+<p><strong>Delete a monitor</strong>:</p>
+<p><code class="docutils literal notranslate"><span class="pre">google-alerts</span> <span class="pre">delete</span> <span class="pre">--id</span> <span class="pre">'89e517961a3148c7:c395b7d271b4eccc:com:en:US'</span></code></p>
+<div class="section" id="sample-code">
+<h2>Sample Code<a class="headerlink" href="#sample-code" title="Permalink to this headline">¶</a></h2>
+<p>This sample code shows some of the range of functionality within the module:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">google_alerts</span> <span class="k">import</span> <span class="n">GoogleAlerts</span>
+
+<span class="c1"># Create an instance</span>
+<span class="n">ga</span> <span class="o">=</span> <span class="n">GoogleAlerts</span><span class="p">(</span><span class="s1">&#39;your.email@gmail.com&#39;</span><span class="p">,</span> <span class="s1">&#39;**password**&#39;</span><span class="p">)</span>
+
+<span class="c1"># Authenticate your user</span>
+<span class="n">ga</span><span class="o">.</span><span class="n">authenticate</span><span class="p">()</span>
+
+<span class="c1"># List configured monitors</span>
+<span class="n">ga</span><span class="o">.</span><span class="n">list</span><span class="p">()</span>
+
+<span class="c1"># Add a new monitor</span>
+<span class="n">ga</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="s2">&quot;Hello World&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;delivery&#39;</span><span class="p">:</span> <span class="s1">&#39;RSS&#39;</span><span class="p">})</span>
+
+<span class="c1"># Modify an existing monitor</span>
+<span class="n">ga</span><span class="o">.</span><span class="n">modify</span><span class="p">(</span><span class="s2">&quot;89e517961a3148c7:c395b7d271b4eccc:com:en:US&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;delivery&#39;</span><span class="p">:</span> <span class="s1">&#39;RSS&#39;</span><span class="p">,</span> <span class="s1">&#39;monitor_match&#39;</span><span class="p">:</span> <span class="s1">&#39;ALL&#39;</span><span class="p">})</span>
+
+<span class="c1"># Delete a monitor</span>
+<span class="n">ga</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="s2">&quot;89e517961a3148c7:c395b7d271b4eccc:com:en:US&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="example-output">
+<h2>Example Output<a class="headerlink" href="#example-output" title="Permalink to this headline">¶</a></h2>
+<p>Below is an example monitor:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[{</span>
     <span class="s2">&quot;term&quot;</span><span class="p">:</span> <span class="s2">&quot;hello world&quot;</span><span class="p">,</span>
     <span class="s2">&quot;user_id&quot;</span><span class="p">:</span> <span class="s2">&quot;09738342945634096720&quot;</span><span class="p">,</span>
@@ -175,12 +208,7 @@
 <span class="p">}]</span>
 </pre></div>
 </div>
-<p><strong>Adding a new monitor</strong>:</p>
-<p><code class="docutils literal notranslate"><span class="pre">ga.create(&quot;Hello</span> <span class="pre">World&quot;,</span> <span class="pre">{'delivery':</span> <span class="pre">'RSS'})</span></code></p>
-<p><strong>Modify an existing monitor</strong>:</p>
-<p><code class="docutils literal notranslate"><span class="pre">ga.modify(&quot;89e517961a3148c7:c395b7d271b4eccc:com:en:US&quot;,</span> <span class="pre">{'delivery':</span> <span class="pre">'RSS',</span> <span class="pre">'monitor_match':</span> <span class="pre">'ALL'})</span></code></p>
-<p><strong>Delete a monitor</strong>:</p>
-<p><code class="docutils literal notranslate"><span class="pre">ga.delete(&quot;89e517961a3148c7:c395b7d271b4eccc:com:en:US&quot;)</span></code></p>
+</div>
 </div>
 
 
