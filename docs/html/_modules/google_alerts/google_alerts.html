@@ -357,6 +357,8 @@
         <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">!=</span> <span class="mi">200</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">ActionError</span><span class="p">(</span><span class="s2">&quot;Failed to create monitor: </span><span class="si">%s</span><span class="s2">&quot;</span>
                               <span class="o">%</span> <span class="n">response</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;exact&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">):</span>
+            <span class="n">term</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\&quot;</span><span class="si">%s</span><span class="se">\&quot;</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">term</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">list</span><span class="p">(</span><span class="n">term</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="GoogleAlerts.modify"><a class="viewcode-back" href="../../code.html#google_alerts.google_alerts.GoogleAlerts.modify">[docs]</a>    <span class="k">def</span> <span class="nf">modify</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">monitor_id</span><span class="p">,</span> <span class="n">options</span><span class="p">):</span>
