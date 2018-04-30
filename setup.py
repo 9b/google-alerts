@@ -8,8 +8,8 @@ def read(fname):
 
 setup(
     name='google-alerts',
-    version='0.1.1',
-    description='Abstraction to manage Google Alerts and output',
+    version='0.1.2',
+    description='Abstraction to manage Google Alerts from code',
     url="https://github.com/9b/google-alerts",
     author="Brandon Dixon",
     author_email="brandon@9bplus.com",

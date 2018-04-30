@@ -64,6 +64,8 @@ def main():
     setup_parser = subs.add_parser('create')
     setup_parser.add_argument('-t', '--term', dest='term', required=True,
                               help='Term to store.', type=str)
+    setup_parser.add_argument('--exact', dest='exact', action='store_true',
+                              help='Exact matches only for term.')
     setup_parser.add_argument('-d', '--delivery', dest='delivery',
                               required=True, choices=['rss', 'mail'],
                               help='Delivery method of results.')
@@ -99,7 +101,8 @@ def main():
         config['password'] = obfuscate(str(config['password']), 'fetch')
         ga = GoogleAlerts(config['email'], config['password'])
         ga.authenticate()
-        monitor = ga.create(args.term, {'delivery': args.delivery})
+        monitor = ga.create(args.term, {'delivery': args.delivery.upper(),
+                                        'exact': args.exact})
         print(json.dumps(monitor, indent=4))
 
     if args.cmd == 'delete':

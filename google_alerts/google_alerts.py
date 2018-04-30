@@ -206,6 +206,8 @@ class GoogleAlerts:
         if response.status_code != 200:
             raise ActionError("Failed to create monitor: %s"
                               % response.content)
+        if options.get('exact', False):
+            term = "\"%s\"" % term
         return self.list(term)
 
     def modify(self, monitor_id, options):
