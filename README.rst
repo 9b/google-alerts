@@ -6,6 +6,10 @@ Python Google Alerts
 .. image:: https://badge.fury.io/py/google-alerts.svg
     :target: https://badge.fury.io/py/google-alerts
 
+.. image:: https://img.shields.io/badge/License-MIT-yellow.svg
+    :target: https://opensource.org/licenses/MIT
+
+
 The `google-alerts` Python module provides an abstract interface for the Google Alerts service. Google does not provide an official API for this service, so interactions are done through web scripting.
 
 Quick Start
@@ -81,6 +85,10 @@ Features
 
 Changelog
 ---------
+04-29-18
+~~~~~~~~
+* Bugfix: Removed extra calls causing an error in the decrypt process
+
 04-26-18
 ~~~~~~~~
 * Feature: Added a command line utility to the code for easy testing

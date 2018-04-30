@@ -3,9 +3,13 @@
 import base64
 import json
 import os
-import sys
 from google_alerts.google_alerts import GoogleAlerts
 from argparse import ArgumentParser
+import sys
+
+PY2 = False
+if sys.version_info[0] < 3:
+    PY2 = True
 
 __author__ = "Brandon Dixon"
 __copyright__ = "Copyright, Brandon Dixon"
@@ -39,7 +43,10 @@ def obfuscate(p, action):
         e = base64.urlsafe_b64decode(p)
         for i in range(len(e)):
             kc = key[i % len(key)]
-            dc = chr((256 + ord(e[i]) - ord(kc)) % 256)
+            if PY2:
+                dc = chr((256 + ord(e[i]) - ord(kc)) % 256)
+            else:
+                dc = chr((256 + e[i] - ord(kc)) % 256)
             s.append(dc)
         return "".join(s)
 
@@ -99,11 +106,9 @@ def main():
         config['password'] = obfuscate(str(config['password']), 'fetch')
         ga = GoogleAlerts(config['email'], config['password'])
         ga.authenticate()
-        print(args.term_id)
         result = ga.delete(args.term_id)
         if result:
             print("%s was deleted" % args.term_id)
-
 
 
 if __name__ == '__main__':
