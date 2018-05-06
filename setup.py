@@ -8,7 +8,7 @@ def read(fname):
 
 setup(
     name='google-alerts',
-    version='0.1.2',
+    version='0.1.3',
     description='Abstraction to manage Google Alerts from code',
     url="https://github.com/9b/google-alerts",
     author="Brandon Dixon",

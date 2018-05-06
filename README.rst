@@ -39,7 +39,7 @@ Sample Code
 
 This sample code shows some of the range of functionality within the module::
 
-    from google_alerts import GoogleAlerts
+    from google_alerts.google_alerts import GoogleAlerts
 
     # Create an instance
     ga = GoogleAlerts('your.email@gmail.com', '**password**')

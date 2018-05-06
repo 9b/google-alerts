@@ -3,7 +3,7 @@
 import base64
 import json
 import os
-from google_alerts.google_alerts import GoogleAlerts
+from google_alerts import GoogleAlerts
 from argparse import ArgumentParser
 import sys
 
