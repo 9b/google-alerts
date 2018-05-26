@@ -34,21 +34,26 @@ def obfuscate(p, action):
     key = "ru7sll3uQrGtDPcIW3okutpFLo6YYtd5bWSpbZJIopYQ0Du0a1WlhvJOaZEH"
     s = list()
     if action == 'store':
-        for i in range(len(p)):
-            kc = key[i % len(key)]
-            ec = chr((ord(p[i]) + ord(kc)) % 256)
-            s.append(ec)
-        return base64.urlsafe_b64encode("".join(s))
+        if PY2:
+            for i in range(len(p)):
+                kc = key[i % len(key)]
+                ec = chr((ord(p[i]) + ord(kc)) % 256)
+                s.append(ec)
+                return base64.urlsafe_b64encode("".join(s))
+        else:
+                return base64.urlsafe_b64encode(p.encode()).decode()
     else:
-        e = base64.urlsafe_b64decode(p)
-        for i in range(len(e)):
-            kc = key[i % len(key)]
-            if PY2:
-                dc = chr((256 + ord(e[i]) - ord(kc)) % 256)
-            else:
-                dc = chr((256 + e[i] - ord(kc)) % 256)
-            s.append(dc)
-        return "".join(s)
+        if PY2:
+            e = base64.urlsafe_b64decode(p)
+            for i in range(len(e)):
+                kc = key[i % len(key)]
+                if PY2:
+                    dc = chr((256 + ord(e[i]) - ord(kc)) % 256)
+                s.append(dc)
+            return "".join(s)
+        else:
+            e = base64.urlsafe_b64decode(p)
+            return e.decode()
 
 
 def main():
@@ -83,7 +88,7 @@ def main():
                       separators=(',', ': '))
         config = CONFIG_DEFAULTS
         config['email'] = args.email
-        config['password'] = obfuscate(args.pwd, 'store')
+        config['password'] = str(obfuscate(args.pwd, 'store'))
         json.dump(config, open(CONFIG_FILE, 'w'), indent=4,
                   separators=(',', ': '))
 

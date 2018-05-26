@@ -11,3 +11,5 @@ venv/
 venv3/
 .pypirc
 .notes
+.pyre*
+chromedriver

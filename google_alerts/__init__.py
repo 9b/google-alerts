@@ -64,6 +64,9 @@ class GoogleAlerts:
         1: 'MAIL',
         2: 'RSS'
     }
+    HEADERS = {
+        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.90 Safari/537.36'
+    }
 
     def __init__(self, email, password):
         self._log = self._logger()
@@ -95,7 +98,7 @@ class GoogleAlerts:
         enumerated.
         """
         self._log.debug("Capturing state from the request")
-        response = self._session.get(url=self.ALERTS_URL)
+        response = self._session.get(url=self.ALERTS_URL, headers=self.HEADERS)
         soup = BeautifulSoup(response.content, "html.parser")
         for i in soup.findAll('script'):
             if i.text.find('window.STATE') == -1:
@@ -143,19 +146,20 @@ class GoogleAlerts:
         if self._is_authenticated:
             self._log.debug("[!] User has already authenticated")
             return
-        init = self._session.get(url=self.LOGIN_URL)
+        init = self._session.get(url=self.LOGIN_URL, headers=self.HEADERS)
         soup = BeautifulSoup(init.content, "html.parser")
         soup_login = soup.find('form').find_all('input')
         post_data = dict()
         for u in soup_login:
-            if u.has_attr('value'):
+            if u.has_attr('name') and u.has_attr('value'):
                 post_data[u['name']] = u['value']
         post_data['Email'] = self._email
         post_data['Passwd'] = self._password
-        response = self._session.post(url=self.AUTH_URL, data=post_data)
+        response = self._session.post(url=self.AUTH_URL, data=post_data,
+                                      headers=self.HEADERS)
         cookies = [x.name for x in response.cookies]
         if 'SIDCC' not in cookies:
-            raise InvalidCredentials("Email or password was incorrect.")
+            raise InvalidCredentials("Email or password was incorrect or Google is forcing a CAPTCHA.")
         self._log.debug("User successfully authenticated")
         self._is_authenticated = True
         self._process_state()
@@ -202,7 +206,7 @@ class GoogleAlerts:
         self._log.debug("Creating alert using: %s" % url)
         params = json.dumps(payload, separators=(',', ':'))
         data = {'params': params}
-        response = self._session.post(url, data=data)
+        response = self._session.post(url, data=data, headers=self.HEADERS)
         if response.status_code != 200:
             raise ActionError("Failed to create monitor: %s"
                               % response.content)
@@ -229,7 +233,7 @@ class GoogleAlerts:
         self._log.debug("Modifying alert using: %s" % url)
         params = json.dumps(payload, separators=(',', ':'))
         data = {'params': params}
-        response = self._session.post(url, data=data)
+        response = self._session.post(url, data=data, headers=self.HEADERS)
         if response.status_code != 200:
             raise ActionError("Failed to create monitor: %s"
                               % response.content)
@@ -252,7 +256,7 @@ class GoogleAlerts:
         payload = [None, monitor_id]
         params = json.dumps(payload, separators=(',', ':'))
         data = {'params': params}
-        response = self._session.post(url, data=data)
+        response = self._session.post(url, data=data, headers=self.HEADERS)
         if response.status_code != 200:
             raise ActionError("Failed to delete by ID: %s"
                               % response.content)
@@ -275,7 +279,7 @@ class GoogleAlerts:
         payload = [None, monitor_id]
         params = json.dumps(payload, separators=(',', ':'))
         data = {'params': params}
-        response = self._session.post(url, data=data)
+        response = self._session.post(url, data=data, headers=self.HEADERS)
         if response.status_code != 200:
             raise ActionError("Failed to delete by term: %s"
                               % response.content)

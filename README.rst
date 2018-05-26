@@ -85,6 +85,12 @@ Features
 
 Changelog
 ---------
+05-25-18
+~~~~~~~~
+* Change: Added headers to all calls to look like less of a bot
+* Bugfix: Wrapped a problem area when inspecting the forms in a page
+* Bugfix: Handled setup error for Python3
+
 04-29-18
 ~~~~~~~~
 * Feature: Allow users to setup exact match queries
