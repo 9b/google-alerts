@@ -85,6 +85,12 @@ Features
 
 Changelog
 ---------
+05-28-18
+~~~~~~~~
+* Feature: Take advantage of the config file concept inside of the class
+* Feature: Authenticate users with a session file if it's available
+* Change: Tell Chrome to avoid using Javascript so we get the old form
+
 05-25-18
 ~~~~~~~~
 * Change: Added headers to all calls to look like less of a bot

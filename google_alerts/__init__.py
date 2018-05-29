@@ -1,8 +1,12 @@
 #!/usr/bin/env python
 """Abstract API over the Google Alerts service."""
+import base64
 import json
 import logging
+import os
+import pickle
 import requests
+import requests.utils
 import sys
 from bs4 import BeautifulSoup
 
@@ -14,6 +18,11 @@ __license__ = "MIT"
 __maintainer__ = "Brandon Dixon"
 __email__ = "brandon@9bplus.com"
 __status__ = "BETA"
+
+
+PY2 = False
+if sys.version_info[0] < 3:
+    PY2 = True
 
 
 class InvalidCredentials(Exception):
@@ -41,13 +50,52 @@ class ActionError(Exception):
     pass
 
 
+def obfuscate(p, action):
+    """Obfuscate the auth details to avoid easy snatching.
+
+    It's best to use a throw away account for these alerts to avoid having
+    your authentication put at risk by storing it locally.
+    """
+    key = "ru7sll3uQrGtDPcIW3okutpFLo6YYtd5bWSpbZJIopYQ0Du0a1WlhvJOaZEH"
+    s = list()
+    if action == 'store':
+        if PY2:
+            for i in range(len(p)):
+                kc = key[i % len(key)]
+                ec = chr((ord(p[i]) + ord(kc)) % 256)
+                s.append(ec)
+                return base64.urlsafe_b64encode("".join(s))
+        else:
+                return base64.urlsafe_b64encode(p.encode()).decode()
+    else:
+        if PY2:
+            e = base64.urlsafe_b64decode(p)
+            for i in range(len(e)):
+                kc = key[i % len(key)]
+                if PY2:
+                    dc = chr((256 + ord(e[i]) - ord(kc)) % 256)
+                s.append(dc)
+            return "".join(s)
+        else:
+            e = base64.urlsafe_b64decode(p)
+            return e.decode()
+
+
+CONFIG_PATH = os.path.expanduser('~/.config/google_alerts')
+CONFIG_FILE = os.path.join(CONFIG_PATH, 'config.json')
+SESSION_FILE = os.path.join(CONFIG_PATH, 'session')
+CONFIG_DEFAULTS = {'email': '', 'password': ''}
+
+
 class GoogleAlerts:
 
     NAME = "GoogleAlerts"
     LOG_LEVEL = logging.INFO
-    LOGIN_URL = 'https://accounts.google.com/ServiceLogin'
+    LOGIN_URL = 'https://accounts.google.com/ServiceLogin?nojavascript=1'
     AUTH_URL = 'https://accounts.google.com/signin/challenge/sl/password'
     ALERTS_URL = 'https://www.google.com/alerts'
+    TEST_URL = 'https://myaccount.google.com/?pli=1'
+    TEST_KEY = 'CREATE YOUR GOOGLE ACCOUNT'
     ALERTS_MODIFY_URL = 'https://www.google.com/alerts/modify?x={requestX}'
     ALERTS_CREATE_URL = 'https://www.google.com/alerts/create?x={requestX}'
     ALERTS_DELETE_URL = 'https://www.google.com/alerts/delete?x={requestX}'
@@ -68,13 +116,68 @@ class GoogleAlerts:
         'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.90 Safari/537.36'
     }
 
-    def __init__(self, email, password):
+    def __init__(self, email=None, password=None):
         self._log = self._logger()
         self._email = email
         self._password = password
         self._is_authenticated = False
         self._state = None
         self._session = requests.session()
+        self._config_bootstrap()
+
+    def _config_bootstrap(self):
+        """Go through and establish the defaults on the file system.
+
+        The approach here was stolen from the CLI tool provided with the
+        module. Idea being that the user should not always need to provide a
+        username and password in order to run the script. If the configuration
+        file is already present with valid data, then lets use it.
+        """
+        if not os.path.exists(CONFIG_PATH):
+            os.makedirs(CONFIG_PATH)
+        if not os.path.exists(CONFIG_FILE):
+            json.dump(CONFIG_DEFAULTS, open(CONFIG_FILE, 'w'), indent=4,
+                      separators=(',', ': '))
+        config = CONFIG_DEFAULTS
+        if self._email and self._password:
+            #  Save the configuration locally to pull later on
+            config['email'] = self._email
+            config['password'] = str(obfuscate(self._password, 'store'))
+            self._log.debug("Caching authentication in config file")
+            json.dump(config, open(CONFIG_FILE, 'w'), indent=4,
+                      separators=(',', ': '))
+        else:
+            #  Load the config file and override the class
+            config = json.load(open(CONFIG_FILE))
+            if config['email'] and config['password']:
+                self._email = config['email']
+                self._password = obfuscate(str(config['password']), 'fetch')
+                self._log.debug("Loaded authentication from config file")
+
+    def _session_check(self):
+        """Attempt to authenticate the user through a session file.
+
+        This process is done to avoid having to authenticate the user every
+        single time. It uses a session file that is saved when a valid session
+        is captured and then reused. Because sessions can expire, we need to
+        test the session prior to calling the user authenticated. Right now
+        that is done with a test string found in an unauthenticated session.
+        This approach is not an ideal method, but it works.
+        """
+        if not os.path.exists(SESSION_FILE):
+            self._log.debug("Session file does not exist")
+            return False
+        with open(SESSION_FILE, 'rb') as f:
+            cookies = requests.utils.cookiejar_from_dict(pickle.load(f))
+            self._session.cookies = cookies
+            self._log.debug("Loaded cookies from session file")
+        response = self._session.get(url=self.TEST_URL, headers=self.HEADERS)
+        if self.TEST_KEY in str(response.content):
+            self._log.debug("Session file appears invalid")
+            return False
+        self._is_authenticated = True
+        self._process_state()
+        return True
 
     def _logger(self):
         """Create a logger to be used between processes.
@@ -89,6 +192,16 @@ class GoogleAlerts:
         shandler.setFormatter(logging.Formatter(fmt))
         logger.addHandler(shandler)
         return logger
+
+    def set_log_level(self, level):
+        """Override the default log level of the class"""
+        if level == 'info':
+            level = logging.INFO
+        if level == 'debug':
+            level = logging.DEBUG
+        if level == 'error':
+            level = logging.ERROR
+        self._log.setLevel(level)
 
     def _process_state(self):
         """Process the application state configuration.
@@ -143,7 +256,8 @@ class GoogleAlerts:
 
     def authenticate(self):
         """Authenticate the user and setup our state."""
-        if self._is_authenticated:
+        valid = self._session_check()
+        if self._is_authenticated and valid:
             self._log.debug("[!] User has already authenticated")
             return
         init = self._session.get(url=self.LOGIN_URL, headers=self.HEADERS)
@@ -159,7 +273,11 @@ class GoogleAlerts:
                                       headers=self.HEADERS)
         cookies = [x.name for x in response.cookies]
         if 'SIDCC' not in cookies:
-            raise InvalidCredentials("Email or password was incorrect or Google is forcing a CAPTCHA.")
+            raise InvalidCredentials("Email or password was incorrect or Google is forcing a CAPTCHA. To get around this issue, authenticate within your web browser, pass the CAPTCHA and try to run this script again. Once authenticated, this module will cache your session and load that in the future.")
+        with open(SESSION_FILE, 'wb') as f:
+            cookies = requests.utils.dict_from_cookiejar(self._session.cookies)
+            pickle.dump(cookies, f, protocol=2)
+            self._log.debug("Saved session to disk for future reference")
         self._log.debug("User successfully authenticated")
         self._is_authenticated = True
         self._process_state()
