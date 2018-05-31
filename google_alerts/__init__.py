@@ -30,6 +30,11 @@ class InvalidCredentials(Exception):
     pass
 
 
+class AccountCaptcha(Exception):
+    """Exception for account CAPTCHA."""
+    pass
+
+
 class InvalidState(Exception):
     """Exception for invalid state."""
     pass
@@ -96,6 +101,7 @@ class GoogleAlerts:
     ALERTS_URL = 'https://www.google.com/alerts'
     TEST_URL = 'https://myaccount.google.com/?pli=1'
     TEST_KEY = 'CREATE YOUR GOOGLE ACCOUNT'
+    CAPTCHA_KEY = 'captcha-container'
     ALERTS_MODIFY_URL = 'https://www.google.com/alerts/modify?x={requestX}'
     ALERTS_CREATE_URL = 'https://www.google.com/alerts/create?x={requestX}'
     ALERTS_DELETE_URL = 'https://www.google.com/alerts/delete?x={requestX}'
@@ -271,9 +277,11 @@ class GoogleAlerts:
         post_data['Passwd'] = self._password
         response = self._session.post(url=self.AUTH_URL, data=post_data,
                                       headers=self.HEADERS)
+        if self.CAPTCHA_KEY in str(response.content):
+            raise AccountCaptcha('Google is forcing a CAPTCHA. To get around this issue, authenticate within your web browser, pass the CAPTCHA and try to run this script again. Once authenticated, this module will cache your session and load that in the future')
         cookies = [x.name for x in response.cookies]
         if 'SIDCC' not in cookies:
-            raise InvalidCredentials("Email or password was incorrect or Google is forcing a CAPTCHA. To get around this issue, authenticate within your web browser, pass the CAPTCHA and try to run this script again. Once authenticated, this module will cache your session and load that in the future.")
+            raise InvalidCredentials("Email or password was incorrect.")
         with open(SESSION_FILE, 'wb') as f:
             cookies = requests.utils.dict_from_cookiejar(self._session.cookies)
             pickle.dump(cookies, f, protocol=2)

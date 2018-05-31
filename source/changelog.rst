@@ -1,5 +1,9 @@
 Changelog
 =========
+05-30-18
+~~~~~~~~
+* Change: Explicitly detect when a CAPTCHA is being thrown
+
 05-28-18
 ~~~~~~~~
 * Feature: Take advantage of the config file concept inside of the class
