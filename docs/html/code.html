@@ -159,6 +159,98 @@
 <h1>Code Documentation<a class="headerlink" href="#code-documentation" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="googlealerts-interface">
 <h2>GoogleAlerts Interface<a class="headerlink" href="#googlealerts-interface" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="google_alerts.GoogleAlerts">
+<em class="property">class </em><code class="descclassname">google_alerts.</code><code class="descname">GoogleAlerts</code><span class="sig-paren">(</span><em>email=None</em>, <em>password=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google_alerts.html#GoogleAlerts"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google_alerts.GoogleAlerts" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="google_alerts.GoogleAlerts._config_bootstrap">
+<code class="descname">_config_bootstrap</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/google_alerts.html#GoogleAlerts._config_bootstrap"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google_alerts.GoogleAlerts._config_bootstrap" title="Permalink to this definition">¶</a></dt>
+<dd><p>Go through and establish the defaults on the file system.</p>
+<p>The approach here was stolen from the CLI tool provided with the
+module. Idea being that the user should not always need to provide a
+username and password in order to run the script. If the configuration
+file is already present with valid data, then lets use it.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="google_alerts.GoogleAlerts._logger">
+<code class="descname">_logger</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/google_alerts.html#GoogleAlerts._logger"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google_alerts.GoogleAlerts._logger" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a logger to be used between processes.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Logging instance.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google_alerts.GoogleAlerts._process_state">
+<code class="descname">_process_state</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/google_alerts.html#GoogleAlerts._process_state"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google_alerts.GoogleAlerts._process_state" title="Permalink to this definition">¶</a></dt>
+<dd><p>Process the application state configuration.</p>
+<p>Google Alerts manages the account information and alert data through
+some custom state configuration. Not all values have been completely
+enumerated.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="google_alerts.GoogleAlerts._session_check">
+<code class="descname">_session_check</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/google_alerts.html#GoogleAlerts._session_check"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google_alerts.GoogleAlerts._session_check" title="Permalink to this definition">¶</a></dt>
+<dd><p>Attempt to authenticate the user through a session file.</p>
+<p>This process is done to avoid having to authenticate the user every
+single time. It uses a session file that is saved when a valid session
+is captured and then reused. Because sessions can expire, we need to
+test the session prior to calling the user authenticated. Right now
+that is done with a test string found in an unauthenticated session.
+This approach is not an ideal method, but it works.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="google_alerts.GoogleAlerts.authenticate">
+<code class="descname">authenticate</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/google_alerts.html#GoogleAlerts.authenticate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google_alerts.GoogleAlerts.authenticate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Authenticate the user and setup our state.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="google_alerts.GoogleAlerts.create">
+<code class="descname">create</code><span class="sig-paren">(</span><em>term</em>, <em>options</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google_alerts.html#GoogleAlerts.create"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google_alerts.GoogleAlerts.create" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a monitor using passed configuration.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="google_alerts.GoogleAlerts.delete">
+<code class="descname">delete</code><span class="sig-paren">(</span><em>monitor_id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google_alerts.html#GoogleAlerts.delete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google_alerts.GoogleAlerts.delete" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delete a monitor by ID.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="google_alerts.GoogleAlerts.delete_by_term">
+<code class="descname">delete_by_term</code><span class="sig-paren">(</span><em>term</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google_alerts.html#GoogleAlerts.delete_by_term"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google_alerts.GoogleAlerts.delete_by_term" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delete an alert by term.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="google_alerts.GoogleAlerts.list">
+<code class="descname">list</code><span class="sig-paren">(</span><em>term=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google_alerts.html#GoogleAlerts.list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google_alerts.GoogleAlerts.list" title="Permalink to this definition">¶</a></dt>
+<dd><p>List alerts configured for the account.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="google_alerts.GoogleAlerts.modify">
+<code class="descname">modify</code><span class="sig-paren">(</span><em>monitor_id</em>, <em>options</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google_alerts.html#GoogleAlerts.modify"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google_alerts.GoogleAlerts.modify" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a monitor using passed configuration.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="google_alerts.GoogleAlerts.set_log_level">
+<code class="descname">set_log_level</code><span class="sig-paren">(</span><em>level</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google_alerts.html#GoogleAlerts.set_log_level"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google_alerts.GoogleAlerts.set_log_level" title="Permalink to this definition">¶</a></dt>
+<dd><p>Override the default log level of the class</p>
+</dd></dl>
+
+</dd></dl>
+
 </div>
 </div>
 

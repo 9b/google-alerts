@@ -1,22 +1,26 @@
 Exceptions
 ==========
 
-.. autoclass:: google_alerts.google_alerts.InvalidCredentials
+.. autoclass:: google_alerts.InvalidCredentials
     :members:
     :private-members:
 
-.. autoclass:: google_alerts.google_alerts.InvalidState
+.. autoclass:: google_alerts.InvalidState
     :members:
     :private-members:
 
-.. autoclass:: google_alerts.google_alerts.MonitorNotFound
+.. autoclass:: google_alerts.MonitorNotFound
     :members:
     :private-members:
 
-.. autoclass:: google_alerts.google_alerts.InvalidConfig
+.. autoclass:: google_alerts.InvalidConfig
     :members:
     :private-members:
 
-.. autoclass:: google_alerts.google_alerts.ActionError
+.. autoclass:: google_alerts.ActionError
+    :members:
+    :private-members:
+
+.. autoclass:: google_alerts.AccountCaptcha
     :members:
     :private-members:
