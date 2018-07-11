@@ -248,11 +248,24 @@ class GoogleAlerts:
                        None, None, None, None, "0", None, None,
                        self._state[3]]]]]
         else:
-            payload = [None, [None, None, None, [None, term, "com", [None,
-                       language, region], None, None, None, 0, 1], None,
-                       monitor_match, [[None, 1, self._email, [None, None, 3],
-                       freq_option, "en-US", None, None, None, None, None, "0",
-                       None, None, self._state[3]]]]]
+            if options['alert_frequency'] == 'AT_MOST_ONCE_A_DAY':
+                payload = [None, [None, None, None, [None, term, "com", [None,
+                           language, region], None, None, None, 0, 1], None,
+                           monitor_match, [[None, 1, self._email, [None, None, 3],
+                           freq_option, "en-US", None, None, None, None, None, "0",
+                           None, None, self._state[3]]]]]
+            elif options['alert_frequency'] == 'AS_IT_HAPPENS':
+                payload = [None, [None, None, None, [None, term, "com", [None,
+                           language, region], None, None, None, 0, 1], None,
+                           monitor_match, [[None, 1, self._email, [], freq_option,
+                           "en-US", None, None, None, None, None, "0",
+                           None, None, self._state[3]]]]]
+            elif options['alert_frequency'] == 'AT_MOST_ONCE_A_WEEK':
+                payload = [None, [None, None, None, [None, term, "com", [None,
+                           language, region], None, None, None, 0, 1], None,
+                           monitor_match, [[None, 1, self._email, [None, None, 0, 3],
+                           freq_option, "en-US", None, None, None, None, None, "0",
+                           None, None, self._state[3]]]]]
 
         if options.get('action') == 'MODIFY':
             payload.insert(1, options.get('monitor_id'))

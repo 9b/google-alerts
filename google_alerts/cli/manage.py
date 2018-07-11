@@ -74,6 +74,9 @@ def main():
     setup_parser.add_argument('-d', '--delivery', dest='delivery',
                               required=True, choices=['rss', 'mail'],
                               help='Delivery method of results.')
+    setup_parser.add_argument('-f', '--frequency', dest='frequency',
+                              default="realtime", choices=['realtime', 'daily', 'weekly'],
+                              help='Frequency to send results. RSS only allows for realtime alerting')
     setup_parser = subs.add_parser('delete')
     setup_parser.add_argument('--id', dest='term_id', required=True,
                               help='ID of the term to find for deletion.',
@@ -106,7 +109,16 @@ def main():
         config['password'] = obfuscate(str(config['password']), 'fetch')
         ga = GoogleAlerts(config['email'], config['password'])
         ga.authenticate()
+        alert_frequency = 'as_it_happens'
+        if args.frequency == 'realtime':
+            alert_frequency = 'as_it_happens'
+        elif args.frequency == 'daily':
+            alert_frequency = 'at_most_once_a_day'
+        else:
+            alert_frequency = 'at_most_once_a_week'
+
         monitor = ga.create(args.term, {'delivery': args.delivery.upper(),
+                                        'alert_frequency': alert_frequency.upper(),
                                         'exact': args.exact})
         print(json.dumps(monitor, indent=4))
 

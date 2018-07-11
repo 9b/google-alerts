@@ -85,6 +85,11 @@ Features
 
 Changelog
 ---------
+07-10-18
+~~~~~~~~
+* Feature: Added the ability to set the frequency when creating alerts
+* Bugfix: Fixed frequency settings when using the mail delivery method
+
 05-30-18
 ~~~~~~~~
 * Change: Explicitly detect when a CAPTCHA is being thrown
