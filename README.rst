@@ -24,7 +24,7 @@ Quick Start
 
 **Create a monitor**:
 
-``google-alerts create --term "hello world" --delivery 'rss'``
+``google-alerts create --term "hello world" --delivery 'rss' --frequency 'realtime'``
 
 **List monitors**:
 
