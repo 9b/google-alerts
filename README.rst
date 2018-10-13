@@ -39,7 +39,7 @@ Sample Code
 
 This sample code shows some of the range of functionality within the module::
 
-    from google_alerts.google_alerts import GoogleAlerts
+    from google_alerts import GoogleAlerts
 
     # Create an instance
     ga = GoogleAlerts('your.email@gmail.com', '**password**')
@@ -85,6 +85,11 @@ Features
 
 Changelog
 ---------
+10-13-18
+~~~~~~~~
+* Feature: Detect when user changes between Python versions during setup
+* Bugfix: Setup process appears to finally be bug-free, screw python2 support
+
 07-10-18
 ~~~~~~~~
 * Feature: Added the ability to set the frequency when creating alerts

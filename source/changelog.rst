@@ -1,5 +1,10 @@
 Changelog
 =========
+10-13-18
+~~~~~~~~
+* Feature: Detect when user changes between Python versions during setup
+* Bugfix: Setup process appears to finally be bug-free, screw python2 support
+
 07-10-18
 ~~~~~~~~
 * Feature: Added the ability to set the frequency when creating alerts

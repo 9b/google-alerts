@@ -69,16 +69,15 @@ def obfuscate(p, action):
                 kc = key[i % len(key)]
                 ec = chr((ord(p[i]) + ord(kc)) % 256)
                 s.append(ec)
-                return base64.urlsafe_b64encode("".join(s))
+            return base64.urlsafe_b64encode("".join(s))
         else:
-                return base64.urlsafe_b64encode(p.encode()).decode()
+            return base64.urlsafe_b64encode(p.encode()).decode()
     else:
         if PY2:
             e = base64.urlsafe_b64decode(p)
             for i in range(len(e)):
                 kc = key[i % len(key)]
-                if PY2:
-                    dc = chr((256 + ord(e[i]) - ord(kc)) % 256)
+                dc = chr((256 + ord(e[i]) - ord(kc)) % 256)
                 s.append(dc)
             return "".join(s)
         else:
@@ -89,7 +88,7 @@ def obfuscate(p, action):
 CONFIG_PATH = os.path.expanduser('~/.config/google_alerts')
 CONFIG_FILE = os.path.join(CONFIG_PATH, 'config.json')
 SESSION_FILE = os.path.join(CONFIG_PATH, 'session')
-CONFIG_DEFAULTS = {'email': '', 'password': ''}
+CONFIG_DEFAULTS = {'email': '', 'password': '', 'py2': PY2}
 
 
 class GoogleAlerts:
@@ -155,6 +154,8 @@ class GoogleAlerts:
         else:
             #  Load the config file and override the class
             config = json.load(open(CONFIG_FILE))
+            if config.get('py2', PY2) != PY2:
+                raise Exception("Python versions have changed. Please run `setup` again to reconfigure the client.")
             if config['email'] and config['password']:
                 self._email = config['email']
                 self._password = obfuscate(str(config['password']), 'fetch')
