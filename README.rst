@@ -12,6 +12,8 @@ Python Google Alerts
 
 The `google-alerts` Python module provides an abstract interface for the Google Alerts service. Google does not provide an official API for this service, so interactions are done through web scripting.
 
+**WARNING:** Your account password will be obfuscated and saved on the file system. Additionally, post-authentication, a session cookie will also be saved. These can be stolen and re-used to compromise your account. As a best practice, register a new email to manage alerts.
+
 Quick Start
 -----------
 **Install the library**:
@@ -85,6 +87,11 @@ Features
 
 Changelog
 ---------
+11-11-18
+~~~~~~~~
+* Feature: Add a new command line argument to seed a session through the browser
+* Change: Added python version detection to the manage script as well
+
 10-13-18
 ~~~~~~~~
 * Feature: Detect when user changes between Python versions during setup

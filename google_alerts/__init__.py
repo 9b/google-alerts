@@ -292,7 +292,7 @@ class GoogleAlerts:
         response = self._session.post(url=self.AUTH_URL, data=post_data,
                                       headers=self.HEADERS)
         if self.CAPTCHA_KEY in str(response.content):
-            raise AccountCaptcha('Google is forcing a CAPTCHA. To get around this issue, authenticate within your web browser, pass the CAPTCHA and try to run this script again. Once authenticated, this module will cache your session and load that in the future')
+            raise AccountCaptcha('Google is forcing a CAPTCHA. To get around this issue, run the google-alerts with the seed option to open an interactive authentication session. Once authenticated, this module will cache your session and load that in the future')
         cookies = [x.name for x in response.cookies]
         if 'SIDCC' not in cookies:
             raise InvalidCredentials("Email or password was incorrect.")

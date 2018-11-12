@@ -1,11 +1,17 @@
 #!/usr/bin/env python
 """Perform administrative actions on Google Alerts."""
 import base64
+import contextlib
 import json
 import os
+import pickle
+import selenium.webdriver as webdriver
+import selenium.webdriver.support.ui as ui
+import sys
+import time
+
 from google_alerts import GoogleAlerts
 from argparse import ArgumentParser
-import sys
 
 PY2 = False
 if sys.version_info[0] < 3:
@@ -22,6 +28,7 @@ __status__ = "BETA"
 
 CONFIG_PATH = os.path.expanduser('~/.config/google_alerts')
 CONFIG_FILE = os.path.join(CONFIG_PATH, 'config.json')
+SESSION_FILE = os.path.join(CONFIG_PATH, 'session')
 CONFIG_DEFAULTS = {'email': '', 'password': '', 'py2': PY2}
 
 
@@ -64,6 +71,10 @@ def main():
                               help='Email of the Google user.', type=str)
     setup_parser.add_argument('-p', '--password', dest='pwd', required=True,
                               help='Password of the Google user.', type=str)
+    setup_parser = subs.add_parser('seed')
+    setup_parser.add_argument('-d', '--driver', dest='driver',
+                              required=True, type=str,
+                              help='Location of the Chrome driver. This can be downloaded by visiting http://chromedriver.chromium.org/downloads',)
     setup_parser = subs.add_parser('list')
     setup_parser = subs.add_parser('create')
     setup_parser.add_argument('-t', '--term', dest='term', required=True,
@@ -75,7 +86,7 @@ def main():
                               help='Delivery method of results.')
     setup_parser.add_argument('-f', '--frequency', dest='frequency',
                               default="realtime", choices=['realtime', 'daily', 'weekly'],
-                              help='Frequency to send results. RSS only allows for realtime alerting')
+                              help='Frequency to send results. RSS only allows for realtime alerting.')
     setup_parser = subs.add_parser('delete')
     setup_parser.add_argument('--id', dest='term_id', required=True,
                               help='ID of the term to find for deletion.',
@@ -95,8 +106,33 @@ def main():
                   separators=(',', ': '))
 
     config = json.load(open(CONFIG_FILE))
+    if config.get('py2', PY2) != PY2:
+        raise Exception("Python versions have changed. Please run `setup` again to reconfigure the client.")
     if config['password'] == '':
         raise Exception("Run setup before any other actions!")
+
+    if args.cmd == 'seed':
+        config['password'] = obfuscate(str(config['password']), 'fetch')
+        ga = GoogleAlerts(config['email'], config['password'])
+        with contextlib.closing(webdriver.Chrome(args.driver)) as driver:
+            driver.get(ga.LOGIN_URL)
+            wait = ui.WebDriverWait(driver, 10) # timeout after 10 seconds
+            inputElement = driver.find_element_by_name('Email')
+            inputElement.send_keys(config['email'])
+            inputElement.submit()
+            time.sleep(3)
+            inputElement = driver.find_element_by_id('Passwd')
+            inputElement.send_keys(config['password'])
+            inputElement.submit()
+            print("[!] Waiting 15 seconds for authentication to complete")
+            time.sleep(15)
+            cookies = driver.get_cookies()
+            collected = dict()
+            for cookie in cookies:
+                collected[str(cookie['name'])] = str(cookie['value'])
+            with open(SESSION_FILE, 'wb') as f:
+                pickle.dump(collected, f, protocol=2)
+        print("Session has been seeded.")
 
     if args.cmd == 'list':
         config['password'] = obfuscate(str(config['password']), 'fetch')

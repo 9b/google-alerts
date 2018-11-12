@@ -1,5 +1,10 @@
 Changelog
 =========
+11-11-18
+~~~~~~~~
+* Feature: Add a new command line argument to seed a session through the browser
+* Change: Added python version detection to the manage script as well
+
 10-13-18
 ~~~~~~~~
 * Feature: Detect when user changes between Python versions during setup
