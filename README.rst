@@ -14,6 +14,10 @@ The `google-alerts` Python module provides an abstract interface for the Google 
 
 **WARNING:** Your account password will be obfuscated and saved on the file system. Additionally, post-authentication, a session cookie will also be saved. These can be stolen and re-used to compromise your account. As a best practice, register a new email to manage alerts.
 
+For detailed explanations of the library, please see the wiki_. 
+
+.. _wiki: https://github.com/9b/google-alerts/wiki
+
 Quick Start
 -----------
 **Install the library**:
