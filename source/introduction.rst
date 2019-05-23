@@ -9,6 +9,10 @@ Getting Started
 
 ``google-alerts setup --email <your.mail@foo.com> --password 'password'``
 
+**Seed your session (driver download, http://chromedriver.chromium.org/downloads)**:
+
+``google-alerts seed --driver /tmp/chromedriver --timeout 60``
+
 **Create a monitor**:
 
 ``google-alerts create --term "hello world" --delivery 'rss' --frequency 'realtime'``

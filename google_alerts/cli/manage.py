@@ -26,6 +26,7 @@ __email__ = "brandon@9bplus.com"
 __status__ = "BETA"
 
 
+AUTH_COOKIE_NAME = 'SIDCC'
 CONFIG_PATH = os.path.expanduser('~/.config/google_alerts')
 CONFIG_FILE = os.path.join(CONFIG_PATH, 'config.json')
 SESSION_FILE = os.path.join(CONFIG_PATH, 'session')
@@ -75,6 +76,8 @@ def main():
     setup_parser.add_argument('-d', '--driver', dest='driver',
                               required=True, type=str,
                               help='Location of the Chrome driver. This can be downloaded by visiting http://chromedriver.chromium.org/downloads',)
+    setup_parser.add_argument('-t', '--timeout', dest='timeout',
+                              required=False, type=int, default=20)
     setup_parser = subs.add_parser('list')
     setup_parser = subs.add_parser('create')
     setup_parser.add_argument('-t', '--term', dest='term', required=True,
@@ -120,19 +123,24 @@ def main():
             inputElement = driver.find_element_by_name('Email')
             inputElement.send_keys(config['email'])
             inputElement.submit()
+            print("[*] Filled in email address and submitted.")
             time.sleep(3)
             inputElement = driver.find_element_by_id('Passwd')
             inputElement.send_keys(config['password'])
             inputElement.submit()
-            print("[!] Waiting 15 seconds for authentication to complete")
-            time.sleep(15)
-            cookies = driver.get_cookies()
+            print("[*] Filled in password and submitted.")
+            print("[!] Waiting for the authentication cookie or %d seconds" % args.timeout)
+            for _ in range(0, args.timeout):
+                cookies = driver.get_cookies()
+                if [x for x in cookies if x['name'] == AUTH_COOKIE_NAME]:
+                    break
+                time.sleep(1)
             collected = dict()
             for cookie in cookies:
                 collected[str(cookie['name'])] = str(cookie['value'])
             with open(SESSION_FILE, 'wb') as f:
                 pickle.dump(collected, f, protocol=2)
-        print("Session has been seeded.")
+        print("[$] Session has been seeded, google-alerts is ready for use.")
 
     if args.cmd == 'list':
         config['password'] = obfuscate(str(config['password']), 'fetch')

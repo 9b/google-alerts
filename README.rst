@@ -14,7 +14,7 @@ The `google-alerts` Python module provides an abstract interface for the Google 
 
 **WARNING:** Your account password will be obfuscated and saved on the file system. Additionally, post-authentication, a session cookie will also be saved. These can be stolen and re-used to compromise your account. As a best practice, register a new email to manage alerts.
 
-For detailed explanations of the library, please see the wiki_. 
+For detailed explanations of the library, please see the wiki_.
 
 .. _wiki: https://github.com/9b/google-alerts/wiki
 
@@ -27,6 +27,10 @@ Quick Start
 **Save your configuration**:
 
 ``google-alerts setup --email <your.mail@foo.com> --password 'password'``
+
+**Seed your session (driver download, http://chromedriver.chromium.org/downloads)**:
+
+``google-alerts seed --driver /tmp/chromedriver --timeout 60``
 
 **Create a monitor**:
 
@@ -91,6 +95,10 @@ Features
 
 Changelog
 ---------
+05-23-19
+~~~~~~~~
+* Feature: Add a new command line argument to allow a user to specify a seed timeout time
+
 11-11-18
 ~~~~~~~~
 * Feature: Add a new command line argument to seed a session through the browser

@@ -1,5 +1,9 @@
 Changelog
 =========
+05-23-19
+~~~~~~~~
+* Feature: Add a new command line argument to allow a user to specify a seed timeout time
+
 11-11-18
 ~~~~~~~~
 * Feature: Add a new command line argument to seed a session through the browser
