@@ -28,7 +28,7 @@ Quick Start
 
 ``google-alerts setup --email <your.mail@foo.com> --password 'password'``
 
-**Seed your session (driver download, http://chromedriver.chromium.org/downloads)**:
+**Seed your session (driver download, http://chromedriver.chromium.org/downloads, do NOT use the pip package as the version is old)**:
 
 ``google-alerts seed --driver /tmp/chromedriver --timeout 60``
 
@@ -95,6 +95,10 @@ Features
 
 Changelog
 ---------
+07-14-19
+~~~~~~~~
+* Bugfix: Account for state changed pushed by Google, breaking all processing
+
 05-23-19
 ~~~~~~~~
 * Feature: Add a new command line argument to allow a user to specify a seed timeout time

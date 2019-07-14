@@ -235,6 +235,20 @@ This approach is not an ideal method, but it works.</p>
 <dt id="google_alerts.GoogleAlerts.list">
 <code class="descname">list</code><span class="sig-paren">(</span><em>term=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google_alerts.html#GoogleAlerts.list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google_alerts.GoogleAlerts.list" title="Permalink to this definition">¶</a></dt>
 <dd><p>List alerts configured for the account.</p>
+<p>At the time of processing, here are several state examples:</p>
+<ul class="simple">
+<li>[‘062bc676ab9e9d9b:5a96b75728adb9d4:com:en:US’, [None, None, [‘email_aih_all’, ‘com’, [‘en’, ‘US’], None, None, None, False], None, 2, [[1, ‘XXX&#64;gmail.com’, [], 1, ‘en-US’, 1, None, None, None, None, ‘7290377213681086747’, None, None, ‘AB2Xq4g1vxP5nJCT4SVMp8-8CeYubB7G0yQdZnM’]]], ‘06449491676132715360’]</li>
+<li>[‘062bc676ab9e9d9b:eb34fff1681232ae:com:en:US’, [None, None, [‘email_aih_best’, ‘com’, [‘en’, ‘US’], None, None, None, False], None, 3, [[1, ‘XXX&#64;gmail.com’, [], 1, ‘en-US’, 1, None, None, None, None, ‘11048899972761343896’, None, None, ‘AB2Xq4ibeyRSs4e6CQEjGTYWRyQgHftJgjkGmdE’]]], ‘06449491676132715360’]</li>
+<li>[‘062bc676ab9e9d9b:029a12ab092e4d48:com:en:US’, [None, None, [‘email_d_all’, ‘com’, [‘en’, ‘US’], None, None, None, False], None, 2, [[1, ‘XXX&#64;gmail.com’, [None, 18], 2, ‘en-US’, 1, None, None, None, None, ‘13677540305540568185’, None, None, ‘AB2Xq4iqyPDNCX_G_ZahmtXr3Ev1Xxk71J3A9o8’]]], ‘06449491676132715360’]</li>
+<li>[‘062bc676ab9e9d9b:be633f8e2d769ed1:com:en:US’, [None, None, [‘email_d_best’, ‘com’, [‘en’, ‘US’], None, None, None, False], None, 3, [[1, ‘XXX&#64;gmail.com’, [None, 18], 2, ‘en-US’, 1, None, None, None, None, ‘3165773263851675895’, None, None, ‘AB2Xq4gAyl3SR-5AKh3NstCHFf3I5tOCH_8Te98’]]], ‘06449491676132715360’]</li>
+<li>[‘062bc676ab9e9d9b:4064fca73997bea1:com:en:US’, [None, None, [‘email_w_all’, ‘com’, [‘en’, ‘US’], None, None, None, False], None, 2, [[1, ‘XXX&#64;gmail.com’, [None, 18, 0], 3, ‘en-US’, 1, None, None, None, None, ‘1277526588871069988’, None, None, ‘AB2Xq4jNqRCDJaqIvPfZTI6Sos2MMPb5q_6jS14’]]], ‘06449491676132715360’]</li>
+<li>[‘062bc676ab9e9d9b:ed3adf6fd0968cb0:com:en:US’, [None, None, [‘email_w_best’, ‘com’, [‘en’, ‘US’], None, None, None, False], None, 3, [[1, ‘XXX&#64;gmail.com’, [None, 18, 0], 3, ‘en-US’, 1, None, None, None, None, ‘11943490843312281977’, None, None, ‘AB2Xq4gvnjg6s07wCxTs4Ag8_6uOC0u9-7Aiu8E’]]], ‘06449491676132715360’]</li>
+<li>[‘062bc676ab9e9d9b:a92eace4d0488209:com:en:US’, [None, None, [‘rss_aih_best’, ‘com’, [‘en’, ‘US’], None, None, None, False], None, 3, [[2, ‘’, [], 1, ‘en-US’, 1, None, None, None, None, ‘10457927733922767031’, None, None, ‘AB2Xq4jZ1IPZLS44ZpaXYn8Fh46euu8_so_2k7k’]]], ‘06449491676132715360’]</li>
+<li>[‘062bc676ab9e9d9b:ac4752c338e8c363:com:en:US’, [None, None, [‘rss_all’, ‘com’, [‘en’, ‘US’], None, None, None, False], None, 2, [[2, ‘’, [], 1, ‘en-US’, 1, None, None, None, None, ‘17387577876633356534’, None, None, ‘AB2Xq4h1wQcVxLfb0s835KmJWdw7bfUzzwpjUrg’]]], ‘06449491676132715360’]</li>
+</ul>
+<p>TODO: Build a function to hash the structure of the state response, so
+that if Google makes any changes, we are notified and can thus fix it
+before it’s reported as a bug.</p>
 </dd></dl>
 
 <dl class="method">

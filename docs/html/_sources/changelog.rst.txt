@@ -1,5 +1,9 @@
 Changelog
 =========
+07-14-19
+~~~~~~~~
+* Bugfix: Account for state changed pushed by Google, breaking all processing
+
 05-23-19
 ~~~~~~~~
 * Feature: Add a new command line argument to allow a user to specify a seed timeout time

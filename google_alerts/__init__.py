@@ -94,7 +94,7 @@ CONFIG_DEFAULTS = {'email': '', 'password': '', 'py2': PY2}
 class GoogleAlerts:
 
     NAME = "GoogleAlerts"
-    LOG_LEVEL = logging.INFO
+    LOG_LEVEL = logging.DEBUG
     LOGIN_URL = 'https://accounts.google.com/ServiceLogin?nojavascript=1'
     AUTH_URL = 'https://accounts.google.com/signin/challenge/sl/password'
     ALERTS_URL = 'https://www.google.com/alerts'
@@ -223,7 +223,7 @@ class GoogleAlerts:
         for i in soup.findAll('script'):
             if i.text.find('window.STATE') == -1:
                 continue
-            state = json.loads(i.text[15:-1])
+            state = json.loads(i.text[25:-6])
             if state != "":
                 self._state = state
                 self._log.debug("State value set: %s" % self._state)
@@ -247,26 +247,26 @@ class GoogleAlerts:
                        language, region], None, None, None, 0, 1], None,
                        monitor_match, [[None, 2, "", [], 1, "en-US", None,
                        None, None, None, None, "0", None, None,
-                       self._state[3]]]]]
+                       self._state[2]]]]]
         else:
             if options['alert_frequency'] == 'AT_MOST_ONCE_A_DAY':
                 payload = [None, [None, None, None, [None, term, "com", [None,
                            language, region], None, None, None, 0, 1], None,
                            monitor_match, [[None, 1, self._email, [None, None, 3],
                            freq_option, "en-US", None, None, None, None, None, "0",
-                           None, None, self._state[3]]]]]
+                           None, None, self._state[2]]]]]
             elif options['alert_frequency'] == 'AS_IT_HAPPENS':
                 payload = [None, [None, None, None, [None, term, "com", [None,
                            language, region], None, None, None, 0, 1], None,
                            monitor_match, [[None, 1, self._email, [], freq_option,
                            "en-US", None, None, None, None, None, "0",
-                           None, None, self._state[3]]]]]
+                           None, None, self._state[2]]]]]
             elif options['alert_frequency'] == 'AT_MOST_ONCE_A_WEEK':
                 payload = [None, [None, None, None, [None, term, "com", [None,
                            language, region], None, None, None, 0, 1], None,
                            monitor_match, [[None, 1, self._email, [None, None, 0, 3],
                            freq_option, "en-US", None, None, None, None, None, "0",
-                           None, None, self._state[3]]]]]
+                           None, None, self._state[2]]]]]
 
         if options.get('action') == 'MODIFY':
             payload.insert(1, options.get('monitor_id'))
@@ -306,7 +306,23 @@ class GoogleAlerts:
         return
 
     def list(self, term=None):
-        """List alerts configured for the account."""
+        """List alerts configured for the account.
+
+        At the time of processing, here are several state examples:
+
+        - ['062bc676ab9e9d9b:5a96b75728adb9d4:com:en:US', [None, None, ['email_aih_all', 'com', ['en', 'US'], None, None, None, False], None, 2, [[1, 'XXX@gmail.com', [], 1, 'en-US', 1, None, None, None, None, '7290377213681086747', None, None, 'AB2Xq4g1vxP5nJCT4SVMp8-8CeYubB7G0yQdZnM']]], '06449491676132715360']
+        - ['062bc676ab9e9d9b:eb34fff1681232ae:com:en:US', [None, None, ['email_aih_best', 'com', ['en', 'US'], None, None, None, False], None, 3, [[1, 'XXX@gmail.com', [], 1, 'en-US', 1, None, None, None, None, '11048899972761343896', None, None, 'AB2Xq4ibeyRSs4e6CQEjGTYWRyQgHftJgjkGmdE']]], '06449491676132715360']
+        - ['062bc676ab9e9d9b:029a12ab092e4d48:com:en:US', [None, None, ['email_d_all', 'com', ['en', 'US'], None, None, None, False], None, 2, [[1, 'XXX@gmail.com', [None, 18], 2, 'en-US', 1, None, None, None, None, '13677540305540568185', None, None, 'AB2Xq4iqyPDNCX_G_ZahmtXr3Ev1Xxk71J3A9o8']]], '06449491676132715360']
+        - ['062bc676ab9e9d9b:be633f8e2d769ed1:com:en:US', [None, None, ['email_d_best', 'com', ['en', 'US'], None, None, None, False], None, 3, [[1, 'XXX@gmail.com', [None, 18], 2, 'en-US', 1, None, None, None, None, '3165773263851675895', None, None, 'AB2Xq4gAyl3SR-5AKh3NstCHFf3I5tOCH_8Te98']]], '06449491676132715360']
+        - ['062bc676ab9e9d9b:4064fca73997bea1:com:en:US', [None, None, ['email_w_all', 'com', ['en', 'US'], None, None, None, False], None, 2, [[1, 'XXX@gmail.com', [None, 18, 0], 3, 'en-US', 1, None, None, None, None, '1277526588871069988', None, None, 'AB2Xq4jNqRCDJaqIvPfZTI6Sos2MMPb5q_6jS14']]], '06449491676132715360']
+        - ['062bc676ab9e9d9b:ed3adf6fd0968cb0:com:en:US', [None, None, ['email_w_best', 'com', ['en', 'US'], None, None, None, False], None, 3, [[1, 'XXX@gmail.com', [None, 18, 0], 3, 'en-US', 1, None, None, None, None, '11943490843312281977', None, None, 'AB2Xq4gvnjg6s07wCxTs4Ag8_6uOC0u9-7Aiu8E']]], '06449491676132715360']
+        - ['062bc676ab9e9d9b:a92eace4d0488209:com:en:US', [None, None, ['rss_aih_best', 'com', ['en', 'US'], None, None, None, False], None, 3, [[2, '', [], 1, 'en-US', 1, None, None, None, None, '10457927733922767031', None, None, 'AB2Xq4jZ1IPZLS44ZpaXYn8Fh46euu8_so_2k7k']]], '06449491676132715360']
+        - ['062bc676ab9e9d9b:ac4752c338e8c363:com:en:US', [None, None, ['rss_all', 'com', ['en', 'US'], None, None, None, False], None, 2, [[2, '', [], 1, 'en-US', 1, None, None, None, None, '17387577876633356534', None, None, 'AB2Xq4h1wQcVxLfb0s835KmJWdw7bfUzzwpjUrg']]], '06449491676132715360']
+
+        TODO: Build a function to hash the structure of the state response, so
+        that if Google makes any changes, we are notified and can thus fix it
+        before it's reported as a bug.
+        """
         if not self._state:
             raise InvalidState("State was not properly obtained from the app")
         self._process_state()
@@ -315,22 +331,23 @@ class GoogleAlerts:
             return list()
 
         monitors = list()
-        for monitor in self._state[1][1]:
+        for monitor in self._state[0][0]:
             obj = dict()
-            obj['monitor_id'] = monitor[1]
+            obj['monitor_id'] = monitor[0]
             obj['user_id'] = monitor[-1]
-            obj['term'] = monitor[2][3][1]
+            obj['term'] = monitor[1][2][0]
             if term and obj['term'] != term:
                 continue
-            obj['language'] = monitor[2][3][3][1]
-            obj['region'] = monitor[2][3][3][2]
-            obj['delivery'] = self.DELIVERY[monitor[2][6][0][1]]
-            obj['match_type'] = self.MONITOR_MATCH_TYPE[monitor[2][5]]
+            obj['language'] = monitor[1][2][2][0]
+            obj['region'] = monitor[1][2][2][1]
+            print(monitor[1][5][0])
+            obj['delivery'] = self.DELIVERY[monitor[1][5][0][0]]
+            obj['match_type'] = self.MONITOR_MATCH_TYPE[monitor[1][4]]
             if obj['delivery'] == 'MAIL':
-                obj['alert_frequency'] = self.ALERT_FREQ[monitor[2][6][0][4]]
-                obj['email_address'] = monitor[2][6][0][2]
+                obj['alert_frequency'] = self.ALERT_FREQ[monitor[1][5][0][3]]
+                obj['email_address'] = monitor[1][5][0][1]
             else:
-                rss_id = monitor[2][6][0][11]
+                rss_id = monitor[1][5][0][10]
                 url = "https://google.com/alerts/feeds/{uid}/{fid}"
                 obj['rss_link'] = url.format(uid=obj['user_id'], fid=rss_id)
             monitors.append(obj)
@@ -342,7 +359,7 @@ class GoogleAlerts:
             raise InvalidState("State was not properly obtained from the app")
         options['action'] = 'CREATE'
         payload = self._build_payload(term, options)
-        url = self.ALERTS_CREATE_URL.format(requestX=self._state[3])
+        url = self.ALERTS_CREATE_URL.format(requestX=self._state[2])
         self._log.debug("Creating alert using: %s" % url)
         params = json.dumps(payload, separators=(',', ':'))
         data = {'params': params}
@@ -369,7 +386,7 @@ class GoogleAlerts:
         options['action'] = 'MODIFY'
         options.update(obj)
         payload = self._build_payload(obj['term'], options)
-        url = self.ALERTS_MODIFY_URL.format(requestX=self._state[3])
+        url = self.ALERTS_MODIFY_URL.format(requestX=self._state[2])
         self._log.debug("Modifying alert using: %s" % url)
         params = json.dumps(payload, separators=(',', ':'))
         data = {'params': params}
@@ -391,7 +408,7 @@ class GoogleAlerts:
             bit = monitor['monitor_id']
         if not bit:
             raise MonitorNotFound("No monitor was found with that term.")
-        url = self.ALERTS_DELETE_URL.format(requestX=self._state[3])
+        url = self.ALERTS_DELETE_URL.format(requestX=self._state[2])
         self._log.debug("Deleting alert using: %s" % url)
         payload = [None, monitor_id]
         params = json.dumps(payload, separators=(',', ':'))
@@ -414,7 +431,7 @@ class GoogleAlerts:
             monitor_id = monitor['monitor_id']
         if not monitor_id:
             raise MonitorNotFound("No monitor was found with that term.")
-        url = self.ALERTS_DELETE_URL.format(requestX=self._state[3])
+        url = self.ALERTS_DELETE_URL.format(requestX=self._state[2])
         self._log.debug("Deleting alert using: %s" % url)
         payload = [None, monitor_id]
         params = json.dumps(payload, separators=(',', ':'))
