@@ -97,6 +97,7 @@ Changelog
 ---------
 07-14-19
 ~~~~~~~~
+* Change: Wrap state parsing functions and have them raise exception on failures
 * Bugfix: Account for state changed pushed by Google, breaking all processing
 
 05-23-19

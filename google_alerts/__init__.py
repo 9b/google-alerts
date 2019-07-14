@@ -40,6 +40,11 @@ class InvalidState(Exception):
     pass
 
 
+class StateParseFailure(Exception):
+    """Exception for failing to parse state."""
+    pass
+
+
 class MonitorNotFound(Exception):
     """Exception for missing monitors."""
     pass
@@ -223,10 +228,13 @@ class GoogleAlerts:
         for i in soup.findAll('script'):
             if i.text.find('window.STATE') == -1:
                 continue
-            state = json.loads(i.text[25:-6])
-            if state != "":
-                self._state = state
-                self._log.debug("State value set: %s" % self._state)
+            try:
+                state = json.loads(i.text[25:-6])
+                if state != "":
+                    self._state = state
+                    self._log.debug("State value set: %s" % self._state)
+            except Exception, e:
+                raise StateParseFailure("Google has changed their core protocol and a new parser must be built. Please file a bug at https://github.com/9b/google-alerts/issues.")
         return self._state
 
     def _build_payload(self, term, options):
@@ -318,10 +326,6 @@ class GoogleAlerts:
         - ['062bc676ab9e9d9b:ed3adf6fd0968cb0:com:en:US', [None, None, ['email_w_best', 'com', ['en', 'US'], None, None, None, False], None, 3, [[1, 'XXX@gmail.com', [None, 18, 0], 3, 'en-US', 1, None, None, None, None, '11943490843312281977', None, None, 'AB2Xq4gvnjg6s07wCxTs4Ag8_6uOC0u9-7Aiu8E']]], '06449491676132715360']
         - ['062bc676ab9e9d9b:a92eace4d0488209:com:en:US', [None, None, ['rss_aih_best', 'com', ['en', 'US'], None, None, None, False], None, 3, [[2, '', [], 1, 'en-US', 1, None, None, None, None, '10457927733922767031', None, None, 'AB2Xq4jZ1IPZLS44ZpaXYn8Fh46euu8_so_2k7k']]], '06449491676132715360']
         - ['062bc676ab9e9d9b:ac4752c338e8c363:com:en:US', [None, None, ['rss_all', 'com', ['en', 'US'], None, None, None, False], None, 2, [[2, '', [], 1, 'en-US', 1, None, None, None, None, '17387577876633356534', None, None, 'AB2Xq4h1wQcVxLfb0s835KmJWdw7bfUzzwpjUrg']]], '06449491676132715360']
-
-        TODO: Build a function to hash the structure of the state response, so
-        that if Google makes any changes, we are notified and can thus fix it
-        before it's reported as a bug.
         """
         if not self._state:
             raise InvalidState("State was not properly obtained from the app")
@@ -331,26 +335,29 @@ class GoogleAlerts:
             return list()
 
         monitors = list()
-        for monitor in self._state[0][0]:
-            obj = dict()
-            obj['monitor_id'] = monitor[0]
-            obj['user_id'] = monitor[-1]
-            obj['term'] = monitor[1][2][0]
-            if term and obj['term'] != term:
-                continue
-            obj['language'] = monitor[1][2][2][0]
-            obj['region'] = monitor[1][2][2][1]
-            print(monitor[1][5][0])
-            obj['delivery'] = self.DELIVERY[monitor[1][5][0][0]]
-            obj['match_type'] = self.MONITOR_MATCH_TYPE[monitor[1][4]]
-            if obj['delivery'] == 'MAIL':
-                obj['alert_frequency'] = self.ALERT_FREQ[monitor[1][5][0][3]]
-                obj['email_address'] = monitor[1][5][0][1]
-            else:
-                rss_id = monitor[1][5][0][10]
-                url = "https://google.com/alerts/feeds/{uid}/{fid}"
-                obj['rss_link'] = url.format(uid=obj['user_id'], fid=rss_id)
-            monitors.append(obj)
+        try:
+            for monitor in self._state[0][0]:
+                obj = dict()
+                obj['monitor_id'] = monitor[0]
+                obj['user_id'] = monitor[-1]
+                obj['term'] = monitor[1][2][0]
+                if term and obj['term'] != term:
+                    continue
+                obj['language'] = monitor[1][2][2][0]
+                obj['region'] = monitor[1][2][2][1]
+                print(monitor[1][5][0])
+                obj['delivery'] = self.DELIVERY[monitor[1][5][0][0]]
+                obj['match_type'] = self.MONITOR_MATCH_TYPE[monitor[1][4]]
+                if obj['delivery'] == 'MAIL':
+                    obj['alert_frequency'] = self.ALERT_FREQ[monitor[1][5][0][3]]
+                    obj['email_address'] = monitor[1][5][0][1]
+                else:
+                    rss_id = monitor[1][5][0][10]
+                    url = "https://google.com/alerts/feeds/{uid}/{fid}"
+                    obj['rss_link'] = url.format(uid=obj['user_id'], fid=rss_id)
+                monitors.append(obj)
+        except Exception, e:
+            raise StateParseFailure("Observed state differs from parser. Please file a bug at https://github.com/9b/google-alerts/issues.")
         return monitors
 
     def create(self, term, options):
