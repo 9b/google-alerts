@@ -345,7 +345,6 @@ class GoogleAlerts:
                     continue
                 obj['language'] = monitor[1][2][2][0]
                 obj['region'] = monitor[1][2][2][1]
-                print(monitor[1][5][0])
                 obj['delivery'] = self.DELIVERY[monitor[1][5][0][0]]
                 obj['match_type'] = self.MONITOR_MATCH_TYPE[monitor[1][4]]
                 if obj['delivery'] == 'MAIL':
