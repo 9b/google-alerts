@@ -330,7 +330,7 @@ class GoogleAlerts:
         if not self._state:
             raise InvalidState("State was not properly obtained from the app")
         self._process_state()
-        if not self._state[1]:
+        if not self._state[0]:
             self._log.info("No monitors have been created yet.")
             return list()
 
