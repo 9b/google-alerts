@@ -247,6 +247,8 @@ class GoogleAlerts:
         ialert_freq = {v: k for k, v in self.ALERT_FREQ.items()}
         freq_option = options.get('alert_frequency', 'AT_MOST_ONCE_A_DAY')
         freq_option = ialert_freq[freq_option]
+        if 'alert_frequency' not in options:
+            options['alert_frequency'] = 'AT_MOST_ONCE_A_DAY'
         if options.get('exact', False):
             term = "\"%s\"" % term
 

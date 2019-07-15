@@ -95,6 +95,11 @@ Features
 
 Changelog
 ---------
+07-15-19
+~~~~~~~~
+* Bugfix: Handle issues in exception definition
+* Bugfix: Provide alert_frequency with a default option if not supplied
+
 07-14-19
 ~~~~~~~~
 * Change: Wrap state parsing functions and have them raise exception on failures
