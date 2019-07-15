@@ -233,7 +233,7 @@ class GoogleAlerts:
                 if state != "":
                     self._state = state
                     self._log.debug("State value set: %s" % self._state)
-            except Exception, e:
+            except Exception as e:
                 raise StateParseFailure("Google has changed their core protocol and a new parser must be built. Please file a bug at https://github.com/9b/google-alerts/issues.")
         return self._state
 
@@ -356,7 +356,7 @@ class GoogleAlerts:
                     url = "https://google.com/alerts/feeds/{uid}/{fid}"
                     obj['rss_link'] = url.format(uid=obj['user_id'], fid=rss_id)
                 monitors.append(obj)
-        except Exception, e:
+        except Exception as e:
             raise StateParseFailure("Observed state differs from parser. Please file a bug at https://github.com/9b/google-alerts/issues.")
         return monitors
 
