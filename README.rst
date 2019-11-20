@@ -95,6 +95,10 @@ Features
 
 Changelog
 ---------
+11-20-19
+~~~~~~~~
+* Change: Captured all results by default instead of best
+
 07-15-19
 ~~~~~~~~
 * Bugfix: Handle issues in exception definition

@@ -9,3 +9,5 @@ ga.authenticate()
 
 # List configured monitors
 print(len(ga.list()))
+
+ga.create('Google', {'delivery': 'mail'})

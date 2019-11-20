@@ -243,7 +243,7 @@ class GoogleAlerts:
         region = options.get('region', 'US')
         language = options.get('language', 'en')
         imatch_type = {v: k for k, v in self.MONITOR_MATCH_TYPE.items()}
-        monitor_match = imatch_type[options.get('monitor_match', 'BEST')]
+        monitor_match = imatch_type[options.get('monitor_match', 'ALL')]
         ialert_freq = {v: k for k, v in self.ALERT_FREQ.items()}
         freq_option = options.get('alert_frequency', 'AT_MOST_ONCE_A_DAY')
         freq_option = ialert_freq[freq_option]
