@@ -165,12 +165,11 @@ def main():
         config['password'] = obfuscate(str(config['password']), 'fetch')
         ga = GoogleAlerts(config['email'], config['password'])
         ga.authenticate()
-        alert_frequency = 'as_it_happens'
         if args.frequency == 'realtime':
             alert_frequency = 'as_it_happens'
-        elif args.frequency == 'daily':
+        if args.frequency == 'daily':
             alert_frequency = 'at_most_once_a_day'
-        else:
+        if args.frequency == 'weekly':
             alert_frequency = 'at_most_once_a_week'
 
         monitor = ga.create(args.term, {'delivery': args.delivery.upper(),
