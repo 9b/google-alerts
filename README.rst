@@ -95,6 +95,10 @@ Features
 
 Changelog
 ---------
+05-09-20
+~~~~~~~~
+* Bugfix: Adjusted the seeding process to use Stackoverflow in order to handle initial Google authentication to bypass bot checks
+
 11-20-19
 ~~~~~~~~
 * Change: Captured all results by default instead of best

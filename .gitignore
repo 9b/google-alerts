@@ -13,3 +13,5 @@ venv3/
 .notes
 .pyre*
 chromedriver
+.DS_Store
+driver

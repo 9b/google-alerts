@@ -100,7 +100,7 @@ class GoogleAlerts:
 
     NAME = "GoogleAlerts"
     LOG_LEVEL = logging.DEBUG
-    LOGIN_URL = 'https://accounts.google.com/ServiceLogin?nojavascript=1'
+    LOGIN_URL = 'https://accounts.google.com/signin'
     AUTH_URL = 'https://accounts.google.com/signin/challenge/sl/password'
     ALERTS_URL = 'https://www.google.com/alerts'
     TEST_URL = 'https://myaccount.google.com/?pli=1'

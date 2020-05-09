@@ -117,17 +117,30 @@ def main():
     if args.cmd == 'seed':
         config['password'] = obfuscate(str(config['password']), 'fetch')
         ga = GoogleAlerts(config['email'], config['password'])
-        with contextlib.closing(webdriver.Chrome(args.driver)) as driver:
-            driver.get(ga.LOGIN_URL)
-            wait = ui.WebDriverWait(driver, 10) # timeout after 10 seconds
-            inputElement = driver.find_element_by_name('Email')
-            inputElement.send_keys(config['email'])
-            inputElement.submit()
-            print("[*] Filled in email address and submitted.")
+        chrome_options = webdriver.ChromeOptions()
+        chrome_options.add_experimental_option("excludeSwitches", ['enable-automation'])
+        with contextlib.closing(webdriver.Chrome(args.driver, options=chrome_options)) as driver:
+            # driver.get(ga.LOGIN_URL)
+            # wait = ui.WebDriverWait(driver, 10) # timeout after 10 seconds
+            # inputElement = driver.find_element_by_class_name('Email')
+            # inputElement.send_keys(config['email'])
+            # inputElement.submit()
+            # print("[*] Filled in email address and submitted.")
+            # time.sleep(30)
+            # inputElement = driver.find_element_by_id('Passwd')
+            # inputElement.send_keys(config['password'])
+            # inputElement.submit()
+
+            driver.get('https://stackoverflow.com/users/signup?ssrc=head&returnurl=%2fusers%2fstory%2fcurrent%27')
             time.sleep(3)
-            inputElement = driver.find_element_by_id('Passwd')
-            inputElement.send_keys(config['password'])
-            inputElement.submit()
+            driver.find_element_by_xpath('//*[@id="openid-buttons"]/button[1]').click()
+            driver.find_element_by_xpath('//input[@type="email"]').send_keys(config['email'])
+            driver.find_element_by_xpath('//*[@id="identifierNext"]').click()
+            time.sleep(3)
+            driver.find_element_by_xpath('//input[@type="password"]').send_keys(config['password'])
+            driver.find_element_by_xpath('//*[@id="passwordNext"]').click()
+            time.sleep(3)
+            driver.get('https://www.google.com/alerts')
             print("[*] Filled in password and submitted.")
             print("[!] Waiting for the authentication cookie or %d seconds" % args.timeout)
             for _ in range(0, args.timeout):
