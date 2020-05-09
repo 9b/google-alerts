@@ -120,17 +120,6 @@ def main():
         chrome_options = webdriver.ChromeOptions()
         chrome_options.add_experimental_option("excludeSwitches", ['enable-automation'])
         with contextlib.closing(webdriver.Chrome(args.driver, options=chrome_options)) as driver:
-            # driver.get(ga.LOGIN_URL)
-            # wait = ui.WebDriverWait(driver, 10) # timeout after 10 seconds
-            # inputElement = driver.find_element_by_class_name('Email')
-            # inputElement.send_keys(config['email'])
-            # inputElement.submit()
-            # print("[*] Filled in email address and submitted.")
-            # time.sleep(30)
-            # inputElement = driver.find_element_by_id('Passwd')
-            # inputElement.send_keys(config['password'])
-            # inputElement.submit()
-
             driver.get('https://stackoverflow.com/users/signup?ssrc=head&returnurl=%2fusers%2fstory%2fcurrent%27')
             time.sleep(3)
             driver.find_element_by_xpath('//*[@id="openid-buttons"]/button[1]').click()
