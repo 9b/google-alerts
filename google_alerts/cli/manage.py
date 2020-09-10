@@ -5,13 +5,13 @@ import contextlib
 import json
 import os
 import pickle
-import selenium.webdriver as webdriver
-import selenium.webdriver.support.ui as ui
 import sys
 import time
+from argparse import ArgumentParser
+
+import selenium.webdriver as webdriver
 
 from google_alerts import GoogleAlerts
-from argparse import ArgumentParser
 
 PY2 = False
 if sys.version_info[0] < 3:
@@ -119,6 +119,8 @@ def main():
         ga = GoogleAlerts(config['email'], config['password'])
         chrome_options = webdriver.ChromeOptions()
         chrome_options.add_experimental_option("excludeSwitches", ['enable-automation'])
+        caps = webdriver.DesiredCapabilities.CHROME.copy()
+        caps['acceptInsecureCerts'] = True
         with contextlib.closing(webdriver.Chrome(args.driver, options=chrome_options)) as driver:
             driver.get('https://stackoverflow.com/users/signup?ssrc=head&returnurl=%2fusers%2fstory%2fcurrent%27')
             time.sleep(3)
@@ -154,8 +156,10 @@ def main():
         config['password'] = obfuscate(str(config['password']), 'fetch')
         ga = GoogleAlerts(config['email'], config['password'])
         ga.authenticate()
-        if args.frequency == 'realtime':
-            alert_frequency = 'as_it_happens'
+
+        # 'realtime' is default, force it
+        alert_frequency = 'as_it_happens'
+
         if args.frequency == 'daily':
             alert_frequency = 'at_most_once_a_day'
         if args.frequency == 'weekly':

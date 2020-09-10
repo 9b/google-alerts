@@ -5,11 +5,12 @@ import json
 import logging
 import os
 import pickle
+import re
+import sys
+
 import requests
 import requests.utils
-import sys
 from bs4 import BeautifulSoup
-
 
 __author__ = "Brandon Dixon"
 __copyright__ = "Copyright, Brandion Dixon"
@@ -225,16 +226,21 @@ class GoogleAlerts:
         self._log.debug("Capturing state from the request")
         response = self._session.get(url=self.ALERTS_URL, headers=self.HEADERS)
         soup = BeautifulSoup(response.content, "html.parser")
-        for i in soup.findAll('script'):
-            if i.text.find('window.STATE') == -1:
+        p = re.compile('window.STATE=(.*);')
+        for i in soup.findAll('script', {'src': False}):
+            if not p.search(i.string):
                 continue
             try:
-                state = json.loads(i.text[25:-6])
+                match = p.search(i.string)
+                state = json.loads(match.group(0)[13:-6])
                 if state != "":
                     self._state = state
                     self._log.debug("State value set: %s" % self._state)
             except Exception as e:
-                raise StateParseFailure("Google has changed their core protocol and a new parser must be built. Please file a bug at https://github.com/9b/google-alerts/issues.")
+                raise StateParseFailure(
+                    'Google has changed their core protocol and a new parser must be built. ' +
+                    'Please file a bug at https://github.com/9b/google-alerts/issues.'
+                )
         return self._state
 
     def _build_payload(self, term, options):
