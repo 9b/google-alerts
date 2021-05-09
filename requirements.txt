@@ -12,7 +12,7 @@ Jinja2>=2.10.1
 MarkupSafe>=1.0
 packaging==17.1
 pkginfo==1.4.2
-Pygments==2.2.0
+Pygments==2.7.4
 pyparsing==2.2.0
 pytz==2018.4
 requests
