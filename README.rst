@@ -24,6 +24,9 @@ Quick Start
 
 ``pip install google-alerts`` or ``python setup.py install``
 
+**Install all dependencies from requirements**:
+``pip install -r requirements.txt``
+
 **Save your configuration**:
 
 ``google-alerts setup --email <your.mail@foo.com> --password 'password'``
